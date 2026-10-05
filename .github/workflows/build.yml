@@ -35,7 +35,10 @@ jobs:
         with:
           name: light-switch-firmware
           path: |
-            light_switch/build/*.bin
-            light_switch/build/*.elf
-            light_switch/build/*.map
+            light_switch/build/light_switch.bin
+            light_switch/build/bootloader/bootloader.bin
+            light_switch/build/partition_table/partition-table.bin
+            light_switch/build/ota_data_initial.bin
+            light_switch/build/flasher_args.json
+            light_switch/build/flash_args
           if-no-files-found: error
