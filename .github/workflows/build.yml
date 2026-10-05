@@ -17,8 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Pull ESP-Matter Docker image
-        run: |
-          docker pull espressif/esp-matter:latest
+        run: docker pull espressif/esp-matter:latest
 
       - name: Build
         run: |
