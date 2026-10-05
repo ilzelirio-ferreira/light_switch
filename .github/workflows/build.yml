@@ -1,0 +1,44 @@
+```yaml
+name: Build ESP-Matter
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pull ESP-Matter Docker image
+        run: |
+          docker pull espressif/esp-matter:latest
+
+      - name: Build
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/project" \
+            -w /project \
+            -e IDF_PATH=/opt/espressif/esp-idf \
+            -e IDF_TOOLS_PATH=/opt/espressif/tools \
+            -e ESP_MATTER_PATH=/opt/espressif/esp-matter \
+            -e NINJA_JOBS=4 \
+            espressif/esp-matter:latest \
+            bash -c "cd /project/light_switch && idf.py build"
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: light-switch-firmware
+          path: |
+            light_switch/build/*.bin
+            light_switch/build/*.elf
+            light_switch/build/*.map
+          if-no-files-found: error
+```
